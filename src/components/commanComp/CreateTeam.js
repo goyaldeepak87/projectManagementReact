@@ -6,7 +6,7 @@ import { createMember, getAllMyProject } from "@/utils/APIs";
 import { useEffect, useRef, useState } from "react";
 
 const roles = [
-    { label: "MANAGER", value: "manager" },
+    // { label: "MANAGER", value: "manager" },
     { label: "MEMBER", value: "member" },
 ];
 
