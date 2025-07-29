@@ -143,7 +143,7 @@ export const getProjectTaskAPI = async (projectId) => {
         },
       }
     );
-    return res.data.data.result;
+    return res;
   } catch (error) {
     console.error("Error fetching project tasks:", error);
     throw error;

@@ -76,7 +76,7 @@ const ProjectManage = () => {
 
     const createdTask = await createTaskAPI(taskData);
     toast.success('Task created successfully!');
-
+    // if()
     if (createdTask) {
       const updated = [...columns];
       updated[index].tasks.push({
@@ -159,7 +159,12 @@ const ProjectManage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const res = await getProjectTaskAPI(projectId); // your API call
+      const result = await getProjectTaskAPI(projectId); // your API call
+      if(result.status !== 201) {
+        toast.error("Failed to fetch project tasks"); 
+        return;
+      }
+      const res = result.data.data.result;
       const formatted = formatTasksToColumns(res);
       setColumns(formatted);
     };
