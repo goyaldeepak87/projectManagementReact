@@ -2,8 +2,9 @@
 
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { ChevronDown, X } from "react-feather";
-import { createMember, getAllMyProject } from "@/utils/APIs";
+import { createMember, getAllMyProjects } from "@/utils/APIs";
 import { useEffect, useRef, useState } from "react";
+import { toast } from "react-toastify";
 
 const roles = [
     // { label: "MANAGER", value: "manager" },
@@ -171,7 +172,7 @@ export function AddPeopleModal({ project, open, onOpenChange }) {
     useEffect(() => {
         const fetchProjects = async () => {
             try {
-                const projects = await getAllMyProject();
+                const projects = await getAllMyProjects();
                 setAllProject(projects);
             } catch (error) {
                 console.error("Error fetching projects:", error);
@@ -202,6 +203,7 @@ export function AddPeopleModal({ project, open, onOpenChange }) {
                 userID: values.project._id,
             });
             resetForm();
+            toast.success('Member added successfully!');
             onOpenChange(false);
         } catch (error) {
             console.error("Failed to add member:", error);

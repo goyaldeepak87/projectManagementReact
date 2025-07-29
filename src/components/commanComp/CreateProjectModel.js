@@ -3,6 +3,7 @@
 import { createProject } from "@/utils/APIs";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { X } from "react-feather";
+import { toast } from "react-toastify";
 
 export function CreateProjectModel({ open, onOpenChange }) {
     if (!open) return null;
@@ -23,6 +24,7 @@ export function CreateProjectModel({ open, onOpenChange }) {
     const handleAddMember = async (values, { resetForm, setSubmitting }) => {
         try {
             await createProject(values);
+            toast.success("Task created successfully!");
             resetForm();
             onOpenChange(false);
             // Optional: show toast success

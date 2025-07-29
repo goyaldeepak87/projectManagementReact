@@ -180,14 +180,12 @@ export default function Users() {
             try {
                 const AllteamsMember = await getMyProjectAllTeams();
                 setMyAllteamsMember(AllteamsMember?.data?.result || []);
-                console.log("Fetched Projects:", AllteamsMember);
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
         };
         fetchAllteamsMember();
     }, []);
-    console.log("myAllteamsMember", myAllteamsMember)
     return (
         <div className="p-6 bg-white rounded-md shadow-md">
             <h2 className="text-sm font-medium text-gray-700 mb-2">Showing results ↻</h2>
@@ -210,7 +208,7 @@ export default function Users() {
                                     className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${user.bg || getRandomColor()}`}
                                 >
                                     {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || user?.email?.split('@')[0].slice(0, 1)}
-                                    {console.log("user initials", user?.name?.split(' ').map(n => n[0]).join('').toUpperCase())}
+                                   
                                 </div>
                                 <div>
                                     <div className="text-sm font-medium text-gray-900">{user?.name || (user?.email?.split('@')[0].slice(0, 15))}</div>

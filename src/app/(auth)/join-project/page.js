@@ -25,7 +25,6 @@ const JoinProjectPage = () => {
 
       try {
         const result = await getVerifyProject({ token });
-        // console.log("✅ Project verified:", result);
         router.replace('/');
       } catch (error) {
         console.error("❌ Project verification failed:", error);

@@ -18,9 +18,10 @@ import {
 import { CreateProjectModel } from './CreateProjectModel';
 import { AddPeopleModal } from './CreateTeam';
 import { useRouter } from 'next/navigation';
-import { deleteCreateProject, getAllMyProject } from '@/utils/APIs';
+import { deleteProject , getAllMyProjects } from '@/utils/APIs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '@/reudux/slice/authSlice';
+import { toast } from 'react-toastify';
 
 const SideBar = () => {
   const [openProjectModel, setOpenProjectModel] = useState(false);
@@ -35,7 +36,7 @@ const SideBar = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const projects = await getAllMyProject();
+        const projects = await getAllMyProjects();
         setProject(projects);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -45,18 +46,17 @@ const SideBar = () => {
   }, [openProjectModel]);
 
   const isAdmin = user?.role !== 'member';
-  console.log("isAdmin", user)
 
   const handleDeleteProject = async (projectId) => {
     try {
       const confirmed = confirm("Are you sure you want to delete this project?");
       if (!confirmed) return;
 
-      await deleteCreateProject(projectId);
-      alert("Project deleted successfully");
+      await deleteProject (projectId);
+      toast.success('Project deleted successfully!');
 
       // Re-fetch project list
-      const updatedProjects = await getAllMyProject();
+      const updatedProjects = await getAllMyProjects();
       setProject(updatedProjects);
     } catch (err) {
       console.error("Error deleting project:", err);

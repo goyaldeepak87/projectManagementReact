@@ -5,7 +5,6 @@ import Lottie from 'react-lottie';
  // Replace with the actual path to your JSON animation file
 
 export default function GifComp({animation}) {
-console.log("animation",animation)
     const defaultOptions = {
         loop: true,
         autoplay: true,

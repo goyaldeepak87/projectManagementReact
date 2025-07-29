@@ -27,7 +27,6 @@ const RegisterPage = () => {
   }
 
   // Only render the login form if user is not authenticated
-  console.log("LoginPage rendered", isAuthenticated);
   return (
     <>
       <RegisterFormModel />

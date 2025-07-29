@@ -4,28 +4,14 @@ import { API_BASE_URL } from "@/config/appBaseUrl";
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 const SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
-// Create a new Projects
-export const createProject = async (sessionData) => {
-  console.log("sadasdada", sessionData)
-  try {
-    const res = await axios.post(`${API_BASE_URL}/users/project`, sessionData, {
-      headers: {
-        ...await DefaultHeader(),
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
+// ==============================
+//   Project APIs
+// ==============================
 
-    return res.data;
-  } catch (error) {
-    console.error("Failed to create session:", error);
-    throw error;
-  }
-};
-
-// get All Projects
-export const getAllMyProject = async () => {
+// Create a new project
+export const createProject = async (projectData) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/users/project/my`, {
+    const res = await axios.post(`${API_BASE_URL}/users/projects`, projectData, {
       headers: {
         ...await DefaultHeader(),
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -33,16 +19,32 @@ export const getAllMyProject = async () => {
     });
     return res.data;
   } catch (error) {
-    console.log("Error fetching meetings:", error);
+    console.error("Failed to create project:", error);
     throw error;
   }
 };
 
-// get My Projects All Teams
+
+// Get all projects created by the logged-in user
+export const getAllMyProjects = async () => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/users/projects/my`, {
+      headers: {
+        ...await DefaultHeader(),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    throw error;
+  }
+};
+
+// Get all teams from the user's projects
 export const getMyProjectAllTeams = async () => {
-  console.log("Fetching all teams for the project");
   try {
-    const res = await axios.get(`${API_BASE_URL}/users/project/myallteams`, {
+    const res = await axios.get(`${API_BASE_URL}/users/projects/my/teams`, {
       headers: {
         ...await DefaultHeader(),
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -50,86 +52,52 @@ export const getMyProjectAllTeams = async () => {
     });
     return res.data;
   } catch (error) {
-    console.log("Error fetching meetings:", error);
+    console.error("Error fetching teams:", error);
     throw error;
   }
 };
 
-// Create a new Member
-export const createMember = async (sessionData) => {
-  console.log("sadasdada", sessionData)
+
+// Delete a project
+export const deleteProject = async (projectId) => {
   try {
-    const res = await axios.post(`${API_BASE_URL}/users/createmember`, sessionData, {
+    const res = await axios.delete(`${API_BASE_URL}/users/projects/${projectId}`, {
       headers: {
         ...await DefaultHeader(),
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
+    return res.data.data.result;
+  } catch (error) {
+    console.error("Failed to delete project:", error);
+    throw error;
+  }
+};
 
+// ==============================
+//  Member APIs
+// ==============================
+
+// Add a member to a project
+export const createMember = async (memberData) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/users/projects/members`, memberData, {
+      headers: {
+        ...await DefaultHeader(),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
     return res.data;
   } catch (error) {
-    console.error("Failed to create session:", error);
+    console.error("Failed to add member:", error);
     throw error;
   }
 };
 
-// /projects/:projectId/tasks
-// Create a new Projects
-export const createTaskAPI = async (sessionData) => {
-  console.log("sadasdada", sessionData)
-  try {
-    const res = await axios.post(`${API_BASE_URL}/users/projects/createtask`, sessionData, {
-      headers: {
-        ...await DefaultHeader(),
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-
-    return res.data.data.result;
-  } catch (error) {
-    console.error("Failed to create session:", error);
-    throw error;
-  }
-};
-
-
-export const getProjectTaskAPI = async (projectId) => {
-  try {
-    const res = await axios.get(`${API_BASE_URL}/users/projects/${projectId}/tasks`, {
-      headers: {
-        ...await DefaultHeader(),
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    return res.data.data.result;
-  } catch (error) {
-    console.log("Error fetching meetings:", error);
-    throw error;
-  }
-};
-
-
-// Move task to another column
-export const moveTaskToColumn = async (taskId, newStatus) => {
-  try {
-    const res = await axios.patch(`${API_BASE_URL}/users/tasks/${taskId}/move`, { newStatus: newStatus }, {
-      headers: {
-        ...await DefaultHeader(),
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    return res.data.data.result;
-  } catch (error) {
-    console.log("Error fetching meetings:", error);
-    throw error;
-  }
-};
-
-
-// project tasks get by members /tasks/:projectId/members
+// Get members of a specific project
 export const getProjectMembers = async (projectId) => {
   try {
-    const res = await axios.get(`${API_BASE_URL}/users/tasks/${projectId}/members`, {
+    const res = await axios.get(`${API_BASE_URL}/users/projects/${projectId}/members`, {
       headers: {
         ...await DefaultHeader(),
         Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -137,15 +105,74 @@ export const getProjectMembers = async (projectId) => {
     });
     return res.data.data.result;
   } catch (error) {
-    console.log("Error fetching meetings:", error);
+    console.error("Error fetching project members:", error);
+    throw error;
+  }
+};
+
+// ==============================
+//  Task APIs
+// ==============================
+
+// Create a task in a project
+export const createTaskAPI = async (taskData) => {
+  try {
+    const res = await axios.post(`${API_BASE_URL}/users/projects/createtask`, taskData, {
+      headers: {
+        ...await DefaultHeader(),
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+    return res.data.data.result;
+  } catch (error) {
+    console.error("Failed to create task:", error);
     throw error;
   }
 };
 
 
-//project tasks get by members assign /tasks/:taskId/assign'
+// Get all tasks for a specific project
+export const getProjectTaskAPI = async (projectId) => {
+  try {
+    const res = await axios.get(
+      `${API_BASE_URL}/users/projects/${projectId}/tasks`,
+      {
+        headers: {
+          ...await DefaultHeader(),
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return res.data.data.result;
+  } catch (error) {
+    console.error("Error fetching project tasks:", error);
+    throw error;
+  }
+};
+
+
+// Move task to a new column (e.g., from todo → in-progress)
+export const moveTaskToColumn = async (taskId, newStatus) => {
+  try {
+    const res = await axios.patch(
+      `${API_BASE_URL}/users/tasks/${taskId}/move`,
+      { newStatus },
+      {
+        headers: {
+          ...await DefaultHeader(),
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+    return res.data.data.result;
+  } catch (error) {
+    console.error("Error moving task:", error);
+    throw error;
+  }
+};
+
+// Assign a task to a specific member
 export const assignTask = async (projectTaskID, assignedId) => {
-  console.log("Assigning task", projectTaskID, assignedId);
   let taskId = projectTaskID;
   let assignedTo = assignedId;
   try {
@@ -157,31 +184,17 @@ export const assignTask = async (projectTaskID, assignedId) => {
     });
     return res.data.data.result;
   } catch (error) {
-    console.log("Error fetching meetings:", error);
+     console.error("Error assigning task:", error);
     throw error;
   }
 };
 
 
-//project tasks get by members assign /tasks/:taskId/assign'
-export const deleteCreateProject = async (projectId) => {
-  console.log("Deleting project", projectId);
-  try {
-    const res = await axios.delete(`${API_BASE_URL}/users/projects/${projectId}`, {
-      headers: {
-        ...await DefaultHeader(),
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-    return res.data.data.result;
-  } catch (error) {
-    console.log("Error fetching meetings:", error);
-    throw error;
-  }
-};
+// ==============================
+//  Project Invite Verification
+// ==============================
 
-
-// /project-invite/verify
+// Verify project invitation token
 export const getVerifyProject = async ({token}) => {
   try {
     const res = await axios.post(`${API_BASE_URL}/auth/project-invite/verify`, { token}, {
@@ -192,58 +205,7 @@ export const getVerifyProject = async ({token}) => {
     });
     return res.data.data.result;
   } catch (error) {
-    console.log("Error fetching meetings:", error);
+      console.error("Error verifying project invite:", error);
     throw error;
   }
 };
-
-// Meeting related API calls
-// export const getMeetings = async () => {
-//   try {
-//     const res = await axios.get(`${API_BASE_URL}/user/api/meetings`, {
-//       headers: {
-//         ...await DefaultHeader(),
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//       },
-//     });
-//     return res.data;
-//   } catch (error) {
-//     console.log("Error fetching meetings:", error);
-//     throw error;
-//   }
-// };
-
-
-// export const getMyBookedMeetings = async () => {
-//   try {
-//     const res = await axios.get(`${API_BASE_URL}/user/api/my-booked-meetings`, {
-//       headers: {
-//         ...await DefaultHeader(),
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//       },
-//     });
-//     return res.data?.data?.bookedMeetings || [];
-//   } catch (error) {
-//     console.log("Error fetching booked meetings:", error);
-//     throw error;
-//   }
-// };
-
-
-// // Get host's created sessions
-// export const getHostSessions = async () => {
-//   try {
-//     const res = await axios.get(`${API_BASE_URL}/user/api/host/my_sessions`, {
-//       headers: {
-//         ...await DefaultHeader(),
-//         Authorization: `Bearer ${localStorage.getItem("token")}`,
-//       },
-//     });
-//     return res.data?.data?.meetings || [];
-//   } catch (error) {
-//     console.error("Failed to fetch host sessions:", error);
-//     throw error;
-//   }
-// };
-
-// Create a new session

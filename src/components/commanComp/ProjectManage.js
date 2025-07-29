@@ -11,6 +11,7 @@ import {
 } from "react-feather";
 import ProjectItemHeader from "./ProjectItemHeader";
 import { assignTask, createTaskAPI, getProjectMembers, getProjectTaskAPI, moveTaskToColumn } from "@/utils/APIs";
+import { toast } from "react-toastify";
 
 const ProjectManage = () => {
   const router = useParams()
@@ -74,6 +75,7 @@ const ProjectManage = () => {
     };
 
     const createdTask = await createTaskAPI(taskData);
+    toast.success('Task created successfully!');
 
     if (createdTask) {
       const updated = [...columns];
@@ -106,7 +108,6 @@ const ProjectManage = () => {
     try {
       // Make API call to assign task first
       await assignTask(projectTaskID, assignedId?._id);
-      console.log(" Task assigned successfully:", projectTaskID, assignedId);
       // If successful, update UI
       const updated = [...columns];
       updated[colIdx].tasks[taskIdx].assignedTo = { name: assignedId.name, email: assignedId.email };
@@ -121,8 +122,6 @@ const ProjectManage = () => {
       toast?.error("Failed to assign task. Please try again.");
     }
   };
-
-  console.log("dsfsdfsdf", columns)
 
 
   const formatTasksToColumns = (tasks) => {
@@ -158,13 +157,9 @@ const ProjectManage = () => {
     return Object.values(defaultColumns);
   };
 
-
-  console.log("Project ID:Columns", columns);
-
   useEffect(() => {
     const fetchData = async () => {
       const res = await getProjectTaskAPI(projectId); // your API call
-      console.log("Fetched tasks:", res);
       const formatted = formatTasksToColumns(res);
       setColumns(formatted);
     };
@@ -405,7 +400,6 @@ const ProjectManage = () => {
                                         key={idx}
                                         className="cursor-pointer p-2 hover:bg-gray-100 rounded"
                                         onClick={() => {
-                                          console.log("asdasfas", task.id, user.userId._id)
                                           handleAssign(index, i, user.initials, task.id, user?.userId, user?.userId?._id || user?.userId?.name, user?.userId, user?.userId?._id)
                                         }}
                                       >

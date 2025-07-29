@@ -22,12 +22,10 @@ export const registerUser = createAsyncThunk(
 export const memberVerifyJoin = createAsyncThunk(
   'auth/memberVerifyJoin',
   async (credentials , { rejectWithValue }) => {
-    console.log("credentials", credentials);
     try {
       const response = await axios.post(`http://localhost:3000/v1/auth/project-invite/verify-email`, credentials);
 
       // ✅ Save token in localStorage (same as login)
-      console.log('Member Verify Join Response:', response.data, response.data.data.result.tokens.access.token);
       localStorage.setItem('token', response.data.data.result.tokens.access.token);
       return response.data.data.result;
     } catch (error) {
