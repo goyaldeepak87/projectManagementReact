@@ -7,7 +7,7 @@ export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:3000/v1/auth/register', credentials);
+      const response = await axios.post('https://project-management-node-10wx2e0aw.vercel.app/v3/auth/register', credentials);
       return response.data;
     } catch (error) {
       if (error.response?.data) {

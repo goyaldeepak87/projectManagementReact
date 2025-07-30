@@ -9,6 +9,7 @@ import { RdirectUrlData } from "@/lang/RdirectUrl";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import RegisterFormModel from "../auth/RegisterFormModel";
+import { checkroute } from "@/utils/APIs";
 
 const RegisterPage = () => {
   const router = useRouter(); // Initialize the router
@@ -19,6 +20,8 @@ const RegisterPage = () => {
     if (isAuthenticated) {
       router.push(RdirectUrlData.Home);
     }
+    const res = checkroute()
+    console.log(res)
   }, [isAuthenticated, router]);
 
   // If user is already authenticated, don't render the login form
