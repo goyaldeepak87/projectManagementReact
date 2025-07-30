@@ -150,24 +150,6 @@ export const getProjectTaskAPI = async (projectId) => {
   }
 };
 
-export const checkroute = async () => {
-  try {
-    const res = await axios.get(
-      `https://project-management-node-5pc711e5j.vercel.app/v3/deepak`,
-      {
-        headers: {
-          ...await DefaultHeader(),
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    return res;
-  } catch (error) {
-    console.error("Error fetching project tasks:", error);
-    throw error;
-  }
-};
-
 
 // Move task to a new column (e.g., from todo → in-progress)
 export const moveTaskToColumn = async (taskId, newStatus) => {
