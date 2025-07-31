@@ -197,7 +197,7 @@ export function AddPeopleModal({ project, open, onOpenChange }) {
 
     const handleAddMember = async (values, { resetForm, setSubmitting }) => {
         try {
-            await createMember({
+            const res = await createMember({
                 email: values.email,
                 role: values.role,
                 userID: values.project._id,
@@ -206,7 +206,8 @@ export function AddPeopleModal({ project, open, onOpenChange }) {
             toast.success('Member added successfully!');
             onOpenChange(false);
         } catch (error) {
-            console.error("Failed to add member:", error);
+            console.log("Failed to add member:", error);
+            toast.error('IP temporarily blocked. Try using a different network.');
         } finally {
             setSubmitting(false);
         }

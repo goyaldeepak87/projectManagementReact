@@ -113,14 +113,16 @@ const SideBar = () => {
       </nav>
 
       {/* Profile */}
-      <div className="p-4 flex items-center space-x-3 mb-8">
-        <span className="text-sm font-semibold [font-size:23px]">{user?.name || "Tom Cook"}</span>
+      <div className="p-4 flex items-center justify-between space-x-3 mb-8">
+        <span className="flex-1 text-sm font-semibold text-ellipsis whitespace-nowrap overflow-hidden font-semibold [font-size:23px]">{user?.name  || "Tom Cook"}</span>
+        <div>
         <LogIn
           onClick={() => {
             dispatch(logout());
             router.push(`/login`); // 👈 optional redirect to login
           }}
-          width={40} height={35} className="cursor-pointer ml-19" />
+          width={40} height={35} className="cursor-pointer" />
+          </div>
       </div>
 
       {/* Modals */}

@@ -1,13 +1,14 @@
 // src/redux/slice/authSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { API_BASE_URL } from "@/config/appBaseUrl";
 
 // Register User
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:3000/v1/auth/register', credentials);
+      const response = await axios.post(`${API_BASE_URL}/auth/register`, credentials);
       return response.data;
     } catch (error) {
       if (error.response?.data) {
@@ -23,7 +24,7 @@ export const memberVerifyJoin = createAsyncThunk(
   'auth/memberVerifyJoin',
   async (credentials , { rejectWithValue }) => {
     try {
-      const response = await axios.post(`http://localhost:3000/v1/auth/project-invite/verify-email`, credentials);
+      const response = await axios.post(`${API_BASE_URL}/auth/project-invite/verify-email`, credentials);
 
       // ✅ Save token in localStorage (same as login)
       localStorage.setItem('token', response.data.data.result.tokens.access.token);
@@ -58,7 +59,7 @@ export const loginUser = createAsyncThunk(
   'auth/loginUser',
   async (credentials, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:3000/v1/auth/login', credentials);
+      const response = await axios.post(`${API_BASE_URL}/auth/login`, credentials);
       localStorage.setItem('token', response.data.data.result.tokens.access.token);
       return response.data.data.result;
     } catch (error) {

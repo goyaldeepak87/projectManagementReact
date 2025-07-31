@@ -1,8 +1,6 @@
 import axios from "axios";
 import { DefaultHeader } from "./DefaultHeader";
 import { API_BASE_URL } from "@/config/appBaseUrl";
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-const SERVER_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
 
 // ==============================
 //   Project APIs hi
@@ -89,7 +87,7 @@ export const createMember = async (memberData) => {
     });
     return res.data;
   } catch (error) {
-    console.error("Failed to add member:", error);
+    console.log("Failed to add member:", error);
     throw error;
   }
 };
