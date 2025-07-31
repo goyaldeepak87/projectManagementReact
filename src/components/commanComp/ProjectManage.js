@@ -26,6 +26,7 @@ const ProjectManage = () => {
   const [assigneeInput, setAssigneeInput] = useState("");
   const [editingTask, setEditingTask] = useState({ columnIndex: null, taskIndex: null, text: "" });
   const [projectMember, setProjectMember] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   // For dropdown/menu outside click
   const menuRef = useRef(null);
@@ -159,14 +160,20 @@ const ProjectManage = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await getProjectTaskAPI(projectId); // your API call
-      if(result.status !== 201) {
-        toast.error("Failed to fetch project tasks"); 
-        return;
+      try {
+        const result = await getProjectTaskAPI(projectId);
+        if (result.status !== 201) {
+          toast.error("Failed to fetch project tasks");
+          return;
+        }
+        const res = result.data.data.result;
+        const formatted = formatTasksToColumns(res);
+        setColumns(formatted);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); // ✅ Only after tasks fetched
       }
-      const res = result.data.data.result;
-      const formatted = formatTasksToColumns(res);
-      setColumns(formatted);
     };
 
     fetchData();
@@ -183,6 +190,11 @@ const ProjectManage = () => {
 
 
   const [hoveredMove, setHoveredMove] = useState(false);
+  if (loading) return <div className="h-screen flex items-center justify-center">
+    <div className="w-10 h-10 border-4 border-gray-300 rounded-full animate-spin"
+      style={{ borderTopColor: 'lab(61 52.47 61.57)' }}
+    ></div>
+  </div>
   return (
     <div className="min-h-screen bg-white p-4">
       {/* Header */}

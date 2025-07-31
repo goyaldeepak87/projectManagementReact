@@ -65,7 +65,7 @@ const SideBar = () => {
   };
 
   return (
-    <div className="h-screen w-72 bg-[#0f172a] text-white flex flex-col justify-between">
+    <div className="fixed h-screen w-72 bg-[#0f172a] text-white flex flex-col justify-between">
       {/* Logo */}
       <div className="p-4 flex items-center space-x-2 mb-3">
         <div className="flex bg-gradient-to-tr rounded-full">

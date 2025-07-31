@@ -157,6 +157,7 @@ export default function Users() {
     const [perPage, setPerPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [myAllteamsMember, setMyAllteamsMember] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const totalPages = Math.ceil(myAllteamsMember.length / perPage);
     const startIndex = (currentPage - 1) * perPage;
@@ -183,9 +184,19 @@ export default function Users() {
             } catch (error) {
                 console.error("Error fetching projects:", error);
             }
+            finally {
+                setLoading(false); // ✅ Only after tasks fetched
+            }
         };
         fetchAllteamsMember();
     }, []);
+
+
+    if (loading) return <div className="h-screen flex items-center justify-center">
+        <div className="w-10 h-10 border-4 border-gray-300 rounded-full animate-spin"
+            style={{ borderTopColor: 'lab(61 52.47 61.57)' }}
+        ></div>
+    </div>
     return (
         <div className="p-6 bg-white rounded-md shadow-md">
             <h2 className="text-sm font-medium text-gray-700 mb-2">Showing results ↻</h2>
@@ -208,7 +219,7 @@ export default function Users() {
                                     className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-semibold ${user.bg || getRandomColor()}`}
                                 >
                                     {user?.name?.split(' ').map(n => n[0]).join('').toUpperCase() || user?.email?.split('@')[0].slice(0, 1)}
-                                   
+
                                 </div>
                                 <div>
                                     <div className="text-sm font-medium text-gray-900">{user?.name || (user?.email?.split('@')[0].slice(0, 15))}</div>
@@ -245,7 +256,7 @@ export default function Users() {
             </table>
 
             {/* Pagination Controls */}
-            <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
+            {/* <div className="flex items-center justify-between mt-4 text-sm text-gray-600">
                 <div className="flex items-center space-x-2">
                     <button
                         className="px-2 py-1 border rounded disabled:opacity-50"
@@ -278,7 +289,7 @@ export default function Users() {
                         <option value="30">30</option>
                     </select>
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 }
