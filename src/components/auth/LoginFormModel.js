@@ -37,7 +37,7 @@ export default function LoginFormModel(props) {
           }
         }}
       >
-        {() => (
+        {({isSubmitting }) => (
           <Form className="mt-6">
             <InputField
               label="Email Address"
@@ -57,9 +57,15 @@ export default function LoginFormModel(props) {
 
             <button
               type="submit"
-              className="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition duration-300 shadow-md"
+              disabled={isSubmitting}
+              className={`w-full mt-6 bg-orange-500 cursor-pointer hover:bg-orange-600 text-white py-3 rounded-lg transition duration-300 shadow-md flex items-center justify-center ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                }`}
             >
-              LOGIN
+              {isSubmitting ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                "LOGIN"
+              )}
             </button>
           </Form>
         )}

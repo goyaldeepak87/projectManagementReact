@@ -24,7 +24,7 @@ export default function RegisterFormModel(props) {
     const dispatch = useDispatch();
     const router = useRouter();
     const searchParams = useSearchParams();
-      const token = searchParams.get("token");
+    const token = searchParams.get("token");
 
     return (
         <div className={`${props?.with || "w-1/2"} relative p-10`}>
@@ -36,7 +36,7 @@ export default function RegisterFormModel(props) {
                     X
                 </div>
             )}
-            <h2 className="text-2xl font-bold text-orange-600">Login</h2>
+            <h2 className="text-2xl font-bold text-orange-600">Register</h2>
 
             <Formik
                 initialValues={{ name: '', email: '', password: '' }}
@@ -64,7 +64,7 @@ export default function RegisterFormModel(props) {
                     }
                 }}
             >
-                {() => (
+                {({isSubmitting}) => (
                     <Form className="mt-6">
                         {/* ✅ Name Field */}
                         <div className="mb-4">
@@ -101,9 +101,15 @@ export default function RegisterFormModel(props) {
                         {/* ✅ Submit Button */}
                         <button
                             type="submit"
-                            className="w-full mt-6 bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition duration-300 shadow-md"
+                            disabled={isSubmitting}
+                            className={`w-full mt-6 cursor-pointer bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition duration-300 shadow-md flex items-center justify-center ${isSubmitting ? "opacity-70 cursor-not-allowed" : ""
+                                }`}
                         >
-                            LOGIN
+                            {isSubmitting ? (
+                                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            ) : (
+                                "LOGIN"
+                            )}
                         </button>
                     </Form>
                 )}
